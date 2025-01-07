@@ -13,8 +13,8 @@ import java.util.List;
 @RequestMapping("/patient")
 @Slf4j
 public class PatientController {
-    private PatientService service;
-    private PatientRepository repository;
+    private final PatientService service;
+    private final PatientRepository repository;
 
     @Autowired
     public PatientController(PatientService service, PatientRepository repository) {
