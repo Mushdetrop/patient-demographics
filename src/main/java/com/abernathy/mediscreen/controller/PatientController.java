@@ -38,8 +38,9 @@ public class PatientController {
             @RequestParam("address") String address,
             @RequestParam("phone") String phone) {
 
-        log.info("Creating Patient: family={}, given={}, dob={}, sex={}, address={}, phone={}",
+        log.error("Creating Patient: family={}, given={}, dob={}, sex={}, address={}, phone={}",
                 family, given, dob, sex, address, phone);
+
 
         Patient patient = Patient.builder()
                 .family(family)

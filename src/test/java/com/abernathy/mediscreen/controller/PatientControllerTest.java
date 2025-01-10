@@ -52,5 +52,6 @@ class PatientControllerTest {
                         .param("address", "1 Brookside St")
                         .param("phone", "100-222-3333"))
                 .andExpect(status().isOk());
+        //check for response and it contains patient information.
     }
 }
