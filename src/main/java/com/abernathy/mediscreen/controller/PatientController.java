@@ -5,6 +5,7 @@ import com.abernathy.mediscreen.repository.PatientRepository;
 import com.abernathy.mediscreen.service.PatientService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,8 +29,7 @@ public class PatientController {
         return service.getAllPatients();
     }
 
-    //complete the annotation @requestparam for DOB, Address, sex, phone number & also finish the builder.
-    @PostMapping("/add")
+    @PostMapping("add")
     public Patient createPatient(
             @RequestParam("family") String family,
             @RequestParam("given") String given,
@@ -51,14 +51,19 @@ public class PatientController {
                 .phone(phone)
                 .build();
 
-        return repository.save(patient);
+        return service.savePatient(patient);
     }
-
 
     //finish adding the patient
     //modify the FirstName & LastName as GivenName and Family Name.
     @DeleteMapping("/{id}")
     public void deletePatient(@PathVariable Long id) {
         service.deletePatient(id);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Patient> updatePatient(@PathVariable Long id, @RequestBody Patient updatedPatient) {
+        Patient patient = service.updatePatient(id, updatedPatient);
+        return (patient != null) ? ResponseEntity.ok(patient) : ResponseEntity.notFound().build();
     }
 }
