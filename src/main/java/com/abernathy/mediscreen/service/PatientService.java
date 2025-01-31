@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -35,18 +34,19 @@ public class PatientService {
         repository.deleteById(id);
     }
 
+    public Patient getPatientById(Long id) {
+        return repository.findById(id).orElse(null);
+    }
+
     public Patient updatePatient(Long id, Patient updatedPatient) {
-        Optional<Patient> existingPatient = repository.findById(id);
-        if (existingPatient.isPresent()) {
-            Patient patient = existingPatient.get();
-            patient.setFamily(updatedPatient.getFamily());
-            patient.setGiven(updatedPatient.getGiven());
-            patient.setDob(updatedPatient.getDob());
-            patient.setSex(updatedPatient.getSex());
-            patient.setAddress(updatedPatient.getAddress());
-            patient.setPhone(updatedPatient.getPhone());
-            return repository.save(patient);
-        }
-        return null;
+        return repository.findById(id).map(existingPatient -> {
+            existingPatient.setGiven(updatedPatient.getGiven());
+            existingPatient.setFamily(updatedPatient.getFamily());
+            existingPatient.setDob(updatedPatient.getDob());
+            existingPatient.setSex(updatedPatient.getSex());
+            existingPatient.setAddress(updatedPatient.getAddress());
+            existingPatient.setPhone(updatedPatient.getPhone());
+            return repository.save(existingPatient);
+        }).orElse(null);
     }
 }
